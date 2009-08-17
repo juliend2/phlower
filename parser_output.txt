@@ -1,0 +1,35 @@
+input:
+class Awesome:
+  def initialize(name):
+    pass
+  
+  def x:
+    2
+
+if true:
+  aw = Awesome.new("brilliant!")
+else:
+  weird
+
+output:
+#<Nodes:0x933b4 @nodes=[
+	#<ClassNode:0x93404 @name="Awesome", @body=#<Nodes:0x93468 @nodes=[
+		#<Nodes:0x93620 @nodes=[
+			#<Nodes:0x93684 @nodes=[
+				#<DefNode:0x936d4 @name="initialize", @body=#<Nodes:0x93738 @nodes=[
+					#<CallNode:0x9379c @receiver=nil, @arguments=[], @method="pass">
+				]>, @params=["name"]>
+			]>, #<DefNode:0x93508 @name="x", @body=#<Nodes:0x93580 @nodes=[
+				#<LiteralNode:0x935d0 @value=2>
+			]>, @params=[]>
+		]>
+	]>>
+	, 
+	#<IfNode:0x93080 @else_body=#<Nodes:0x930e4 @nodes=[
+			#<CallNode:0x93148 @receiver=nil, @arguments=[], @method="weird">
+		]>, @body=#<Nodes:0x931ac @nodes=[
+		#<SetLocalNode:0x931fc @name="aw", @value=#<CallNode:0x9324c @receiver=#<GetConstantNode:0x93314 @name="Awesome">, @arguments=[
+			#<LiteralNode:0x932c4 @value="brilliant!">
+		], @method="new">>
+	]>, @condition=#<LiteralNode:0x93364 @value=true>>
+]>
