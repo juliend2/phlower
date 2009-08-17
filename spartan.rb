@@ -23,38 +23,67 @@ def ifarg(objet)
 end
 
 def ifbody(objet)
-  node(objet) { puts objet }
+  puts objet
+end
+
+def ifnode(arg, body)
+  puts "if ("
+  yield arg
+  puts ") {"
+  yield body
+  puts "}"
+end
+
+def classnode(name, body)
+  puts "class "
+  yield name
+  puts "{"
+  yield body
+  puts "}"
+end
+
+def defnode(name, body)
+  puts "function "
+  yield name
+  puts "(){"
+  yield body
+  puts "}"
+end
+
+def nodenode(nod)
+  yield nod
 end
 
 def node(objet)
-  # puts objet.class
-  # puts objet.instance_variable_get(:@condition)
+
   if objet.instance_of?(IfNode)
-    puts "if ("+ ifarg(objet.instance_variable_get(:@condition)).to_s + ")"
-    puts "{"
-    yield ifbody(objet.instance_variable_get(:@body)) if block_given?
-    puts "}"
+    ifnode(objet.instance_variable_get(:@condition), objet.instance_variable_get(:@body)) do |txt|
+      puts txt
+    end
   end
   
   if objet.instance_of?(ClassNode)
-    puts "class "+ objet.instance_variable_get(:@name).to_s + "{"
-    yield node(objet.instance_variable_get(:@body)) if block_given?
-    puts "}"
-  end
-  
-  if objet.instance_of?(Nodes)
-    yield node(objet.instance_variable_get(:@nodes)) if block_given?
+    classnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
+      puts txt
+    end
   end
   
   if objet.instance_of?(DefNode)
-    puts "function "+ objet.instance_variable_get(:@name).to_s + "(" + objet.instance_variable_get(:@params).to_s + ") {"
-    yield node(objet.instance_variable_get(:@body)) if block_given?
-    puts "}"
+    defnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
+      puts txt
+    end
   end
   
-  if objet.instance_of?(String)
-    yield objet if block_given?
+  if objet.instance_of?(Nodes)
+    # yield node(objet.instance_variable_get(:@nodes)) if block_given?
+    nodenode(objet.instance_variable_get(:@nodes)) do |txt|
+      puts txt
+    end
   end
+  
+  # if objet.instance_of?(String)
+  #     yield objet if block_given?
+  #   end
 end
 
 if objects.instance_of?(Nodes)
