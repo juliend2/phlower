@@ -28,30 +28,72 @@ end
 
 def ifnode(arg, body)
   puts "if ("
-  yield arg
+  if block_given?
+    yield arg
+  else
+    puts arg
+  end
   puts ") {"
-  yield body
+  # yield body
+  if block_given?
+    yield body
+  else
+    puts body
+  end
   puts "}"
 end
 
 def classnode(name, body)
   puts "class "
-  yield name
+  # yield name
+  if block_given?
+    yield name
+  else
+    puts name
+  end
   puts "{"
-  yield body
+  # yield body
+  if block_given?
+    yield body
+  else
+    puts body
+  end
   puts "}"
 end
 
 def defnode(name, body)
   puts "function "
-  yield name
+  # yield name
+  if block_given?
+    yield name
+  else
+    puts name
+  end
   puts "(){"
-  yield body
+  # yield body
+  if block_given?
+    yield body
+  else
+    puts body
+  end
   puts "}"
 end
 
 def nodenode(nod)
-  yield nod
+  # yield nod
+  if block_given?
+    yield nod
+  else
+    puts nod
+  end
+end
+
+def literalnode(node)
+  if block_given?
+    yield node
+  else
+    puts node
+  end
 end
 
 def node(objet)
@@ -77,6 +119,12 @@ def node(objet)
   if objet.instance_of?(Nodes)
     # yield node(objet.instance_variable_get(:@nodes)) if block_given?
     nodenode(objet.instance_variable_get(:@nodes)) do |txt|
+      puts txt
+    end
+  end
+  
+  if objet.instance_of?(LiteralNode)
+    literalnode(objet.instance_variable_get(:@value)) do |txt|
       puts txt
     end
   end
