@@ -26,7 +26,7 @@ def ifbody(objet)
   puts objet
 end
 
-def ifnode(arg, body, &block)
+def ifnode(arg, body)
   puts "if ("
   yield arg
   puts ") {"
@@ -34,31 +34,27 @@ def ifnode(arg, body, &block)
   puts "}"
 end
 
-def classnode(name, body, &block)
+def classnode(name, body)
   puts "class "
-  # yield name
-  block.call(name)
+  yield name
   puts "{"
-  # yield body
-  block.call(body)
+  yield body
   puts "}"
 end
 
-def defnode(name, body, &block)
+def defnode(name, body)
   puts "function "
-  # yield name
-  block.call(name)
+  yield name
   puts "(){"
-  # yield body
-  block.call(body)
+  yield body
   puts "}"
 end
 
-def nodenode(nod, &block)
+def nodenode(nod)
   yield nod
 end
 
-def literalnode(node, &block)
+def literalnode(node)
   yield node
 end
 
