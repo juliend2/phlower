@@ -28,72 +28,34 @@ end
 
 def ifnode(arg, body)
   puts "if ("
-  if block_given?
-    yield arg
-  else
-    puts arg
-  end
+  yield arg
   puts ") {"
-  # yield body
-  if block_given?
-    yield body
-  else
-    puts body
-  end
+  yield body
   puts "}"
 end
 
 def classnode(name, body)
   puts "class "
-  # yield name
-  if block_given?
-    yield name
-  else
-    puts name
-  end
+  yield name
   puts "{"
-  # yield body
-  if block_given?
-    yield body
-  else
-    puts body
-  end
+  yield body
   puts "}"
 end
 
 def defnode(name, body)
   puts "function "
-  # yield name
-  if block_given?
-    yield name
-  else
-    puts name
-  end
+  yield name
   puts "(){"
-  # yield body
-  if block_given?
-    yield body
-  else
-    puts body
-  end
+  yield body
   puts "}"
 end
 
 def nodenode(nod)
-  # yield nod
-  if block_given?
-    yield nod
-  else
-    puts nod
-  end
+  yield nod
 end
 
 def literalnode(node)
-  if block_given?
-    yield node
-  else
-    puts node
-  end
+  yield node
 end
 
 def node(objet)
