@@ -59,35 +59,61 @@ def literalnode(node)
 end
 
 def node(objet)
-
+  # puts objet.class
+  
   if objet.instance_of?(IfNode)
     ifnode(objet.instance_variable_get(:@condition), objet.instance_variable_get(:@body)) do |txt|
-      puts txt
+      # puts txt
+      if txt.is_a?(Awesome)
+        node(txt)
+      else
+        puts txt
+      end
     end
   end
   
   if objet.instance_of?(ClassNode)
     classnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
-      puts txt
+      # puts txt.is_a?(Awesome)
+      if txt.is_a?(Awesome)
+        node(txt)
+      else
+        puts txt
+      end
     end
   end
   
   if objet.instance_of?(DefNode)
     defnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
-      puts txt
+      # puts txt
+      if txt.is_a?(Awesome)
+        node(txt)
+      else
+        puts txt
+      end
     end
   end
   
   if objet.instance_of?(Nodes)
     # yield node(objet.instance_variable_get(:@nodes)) if block_given?
     nodenode(objet.instance_variable_get(:@nodes)) do |txt|
-      puts txt
+      # puts txt
+      if txt.is_a?(Awesome)
+        node(txt)
+      else
+        puts txt
+      end
     end
   end
   
   if objet.instance_of?(LiteralNode)
     literalnode(objet.instance_variable_get(:@value)) do |txt|
-      puts txt
+      # puts txt
+      if txt.is_a?(Awesome)
+        node(txt)
+      else
+        puts txt
+      end
     end
   end
   

@@ -1,5 +1,7 @@
+class Awesome
+end
 # Collection of nodes each one representing an expression.
-class Nodes
+class Nodes < Awesome
   def initialize(nodes)
     @nodes = nodes
   end
@@ -22,7 +24,7 @@ end
 
 # Literals are static values that have a Ruby representation,
 # eg.: a string, a number, true, false, nil, etc.
-class LiteralNode
+class LiteralNode < Awesome
   def initialize(value)
     @value = value
   end
@@ -53,7 +55,7 @@ end
 #   receiver.method
 #   receiver.method(argument1, argument2)
 #
-class CallNode
+class CallNode < Awesome
   def initialize(receiver, method, arguments=[])
     @receiver = receiver
     @method = method
@@ -85,7 +87,7 @@ class CallNode
 end
 
 # Retreiving the value of a constant.
-class GetConstantNode
+class GetConstantNode < Awesome
   def initialize(name)
     @name = name
   end
@@ -96,7 +98,7 @@ class GetConstantNode
 end
 
 # Setting the value of a constant.
-class SetConstantNode
+class SetConstantNode < Awesome
   def initialize(name, value)
     @name = name
     @value = value
@@ -108,7 +110,7 @@ class SetConstantNode
 end
 
 # Setting the value of a local variable.
-class SetLocalNode
+class SetLocalNode < Awesome
   def initialize(name, value)
     @name = name
     @value = value
@@ -120,7 +122,7 @@ class SetLocalNode
 end
 
 # Method definition.
-class DefNode
+class DefNode < Awesome
   def initialize(name, params, body)
     @name = name
     @params = params
@@ -133,7 +135,7 @@ class DefNode
 end
 
 # Class definition.
-class ClassNode
+class ClassNode < Awesome
   def initialize(name, body)
     @name = name
     @body = body
@@ -154,7 +156,7 @@ end
 # if-else control structure.
 # Look at this node if you want to implement other
 # control structures like while, for, loop, etc.
-class IfNode
+class IfNode < Awesome
   def initialize(condition, body, else_body=nil)
     @condition = condition
     @body = body
