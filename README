@@ -1,0 +1,2 @@
+a small ruby parser that converts the Awesome syntax (invented by MACournoyer) into PHP syntax.
+This script is written in Ruby and uses racc.
