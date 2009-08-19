@@ -18,6 +18,10 @@ EOS
 
 objects = Parser.new.parse(code)
 
+def debug(arg)
+  # puts '--'+arg.to_s+'--'
+end
+
 def ifarg(objet)
   objet.instance_variable_get(:@value)
 end
@@ -32,6 +36,7 @@ def ifnode(arg, body)
   puts ") {"
   yield body
   puts "}"
+  body
 end
 
 def classnode(name, body)
@@ -40,6 +45,7 @@ def classnode(name, body)
   puts "{"
   yield body
   puts "}"
+  body
 end
 
 def defnode(name, body)
@@ -48,6 +54,7 @@ def defnode(name, body)
   puts "(){"
   yield body
   puts "}"
+  body
 end
 
 def nodenode(nod)
@@ -65,8 +72,12 @@ def node(objet)
     ifnode(objet.instance_variable_get(:@condition), objet.instance_variable_get(:@body)) do |txt|
       # puts txt
       if txt.is_a?(Awesome)
+        debug('d')
         node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
       else
+        debug('e')
         puts txt
       end
     end
@@ -76,8 +87,12 @@ def node(objet)
     classnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
       # puts txt.is_a?(Awesome)
       if txt.is_a?(Awesome)
+        debug('d')
         node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
       else
+        debug('e')
         puts txt
       end
     end
@@ -87,8 +102,12 @@ def node(objet)
     defnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
       # puts txt
       if txt.is_a?(Awesome)
+        debug('d')
         node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
       else
+        debug('e')
         puts txt
       end
     end
@@ -99,9 +118,14 @@ def node(objet)
     nodenode(objet.instance_variable_get(:@nodes)) do |txt|
       # puts txt
       if txt.is_a?(Awesome)
+        debug('d')
         node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
       else
+        debug('e')
         puts txt
+        puts txt.class
       end
     end
   end
@@ -111,6 +135,8 @@ def node(objet)
       # puts txt
       if txt.is_a?(Awesome)
         node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
       else
         puts txt
       end
