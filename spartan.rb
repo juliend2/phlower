@@ -18,9 +18,6 @@ EOS
 
 objects = Parser.new.parse(code)
 
-def debug(arg)
-  # puts '--'+arg.to_s+'--'
-end
 
 def ifarg(objet)
   objet.instance_variable_get(:@value)
@@ -31,29 +28,38 @@ def ifbody(objet)
 end
 
 def ifnode(arg, body)
-  puts "if ("
+  # puts "if ("
+  @f.write('if (')
   yield arg
-  puts ") {"
+  # puts ") {"
+  @f.write(') {')
   yield body
-  puts "}"
+  # puts "}"
+  @f.write('}')
   body
 end
 
 def classnode(name, body)
-  puts "class "
+  # puts "class "
+  @f.write('class ')
   yield name
-  puts "{"
+  # puts "{"
+  @f.write('{')
   yield body
-  puts "}"
+  # puts "}"
+  @f.write('}')
   body
 end
 
 def defnode(name, body)
-  puts "function "
+  # puts "function "
+  @f.write('function ')
   yield name
-  puts "(){"
+  # puts "(){"
+  @f.write('(){')
   yield body
-  puts "}"
+  # puts "}"
+  @f.write('}')
   body
 end
 
@@ -72,13 +78,11 @@ def node(objet)
     ifnode(objet.instance_variable_get(:@condition), objet.instance_variable_get(:@body)) do |txt|
       # puts txt
       if txt.is_a?(Awesome)
-        debug('d')
         node(txt)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        debug('e')
-        puts txt
+        @f.write(txt)
       end
     end
   end
@@ -87,13 +91,11 @@ def node(objet)
     classnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
       # puts txt.is_a?(Awesome)
       if txt.is_a?(Awesome)
-        debug('d')
         node(txt)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        debug('e')
-        puts txt
+        @f.write(txt)
       end
     end
   end
@@ -102,13 +104,11 @@ def node(objet)
     defnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
       # puts txt
       if txt.is_a?(Awesome)
-        debug('d')
         node(txt)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        debug('e')
-        puts txt
+        @f.write(txt)
       end
     end
   end
@@ -118,27 +118,23 @@ def node(objet)
     nodenode(objet.instance_variable_get(:@nodes)) do |txt|
       # puts txt
       if txt.is_a?(Awesome)
-        debug('d')
         node(txt)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        debug('e')
-        puts txt
-        puts txt.class
+        @f.write(txt)
       end
     end
   end
   
   if objet.instance_of?(LiteralNode)
     literalnode(objet.instance_variable_get(:@value)) do |txt|
-      # puts txt
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        puts txt
+        @f.write(txt)
       end
     end
   end
@@ -148,12 +144,15 @@ def node(objet)
   #   end
 end
 
+
+@f = File.open("compiled.txt", "w")
 if objects.instance_of?(Nodes)
   objarray = objects.instance_variable_get(:@nodes)
   objarray.each do |object|
-    puts node(object)
+    @f.write( node(object))
   end
 end
+@f.close()
 
 
 # <Nodes @nodes=[
