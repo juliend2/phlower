@@ -3,15 +3,15 @@ require "parser.rb"
 code = <<-EOS
 class Awesome:
   def initialize(name):
-    pass
+    pass()
   
   def x:
-    2
+    return(2)
 
 if true:
   aw = Awesome.new("brilliant!")
 else:
-  weird
+  weird()
 EOS
 
 
@@ -76,7 +76,6 @@ def node(objet)
   
   if objet.instance_of?(IfNode)
     ifnode(objet.instance_variable_get(:@condition), objet.instance_variable_get(:@body)) do |txt|
-      # puts txt
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -89,7 +88,6 @@ def node(objet)
   
   if objet.instance_of?(ClassNode)
     classnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
-      # puts txt.is_a?(Awesome)
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -102,7 +100,6 @@ def node(objet)
   
   if objet.instance_of?(DefNode)
     defnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@params), objet.instance_variable_get(:@body)) do |txt|
-      # puts txt.to_s + " : " + txt.class.to_s + " " + txt.length.to_s unless 
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -113,10 +110,20 @@ def node(objet)
     end
   end
   
+  if objet.instance_of?(CallNode)
+    # literalnode(objet.instance_variable_get(:@value)) do |txt|
+    #   if txt.is_a?(Awesome)
+    #     node(txt)
+    #   elsif(txt.instance_of?(Array))
+    #     txt.each {|tx| node(tx)}
+    #   else
+    #     @f.write(txt)
+    #   end
+    # end
+  end
+  
   if objet.instance_of?(Nodes)
-    # yield node(objet.instance_variable_get(:@nodes)) if block_given?
     nodenode(objet.instance_variable_get(:@nodes)) do |txt|
-      # puts txt
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -175,3 +182,28 @@ end
 #   #<CallNode:0x8fcc8 @arguments=[], @method="weird", @receiver=nil>
 # ]>>
 # ]>
+
+
+#<Nodes:0x8fb60 @nodes=[
+# #<ClassNode:0x8fbb0 @name="Awesome", @body=#<Nodes:0x8fc14 @nodes=[
+#   #<Nodes:0x8fe44 @nodes=[
+#     #<Nodes:0x8fea8 @nodes=[
+#       #<DefNode:0x8fef8 @name="initialize", @body=#<Nodes:0x8ff5c @nodes=[
+#         #<CallNode:0x8ffac @receiver=nil, @arguments=[], @method="pass">
+#       ]>, @params=["name"]>
+#     ]>, 
+#     #<DefNode:0x8fcb4 @name="x", @body=#<Nodes:0x8fd2c @nodes=[
+#       #<CallNode:0x8fd7c @receiver=nil, @arguments=[
+#         #<LiteralNode:0x8fdf4 @value=2>
+#       ], @method="return">
+#     ]>, @params=[]>
+#   ]>
+# ]>>, 
+# #<IfNode:0x8f804 @condition=#<LiteralNode:0x8fb10 @value=true>, @body=#<Nodes:0x8f958 @nodes=[
+#   #<SetLocalNode:0x8f9a8 @name="aw", @value=#<CallNode:0x8f9f8 @receiver=#<GetConstantNode:0x8fac0 @name="Awesome">, @arguments=[
+#     #<LiteralNode:0x8fa70 @value="brilliant!">
+#   ], @method="new">>
+# ]>, @else_body=#<Nodes:0x8f868 @nodes=[
+#   #<CallNode:0x8f8b8 @receiver=nil, @arguments=[], @method="weird">
+# ]>>
+#]>
