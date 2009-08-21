@@ -21,26 +21,20 @@ def ifbody(objet)
 end
 
 def ifnode(arg, body)
-  # puts "if ("
-  @f.write('if (')
+  @f.write("if (")
   yield arg
-  # puts ") {"
-  @f.write(') {')
+  @f.write(") {\n")
   yield body
-  # puts "}"
-  @f.write('}')
+  @f.write("}\n")
   body
 end
 
 def classnode(name, body)
-  # puts "class "
   @f.write('class ')
   yield name
-  # puts "{"
-  @f.write('{')
+  @f.write("{\n\n")
   yield body
-  # puts "}"
-  @f.write('}')
+  @f.write("}\n\n")
   body
 end
 
@@ -49,17 +43,16 @@ def defnode(name, params, body)
   yield name
   @f.write('(')
   yield params
-  @f.write('){')
+  @f.write("){\n")
   yield body
-  # puts "}"
-  @f.write('}')
+  @f.write("}\n\n")
   body
 end
 
 def callnode(identifier, arglist, expression={})
   @f.write(identifier+"(")
   yield arglist
-  @f.write(");")  
+  @f.write(");\n")  
 end
 
 def nodenode(nod)
