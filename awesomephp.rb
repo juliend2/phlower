@@ -49,10 +49,28 @@ def defnode(name, params, body)
   body
 end
 
-def callnode(identifier, arglist, expression={})
-  @f.write(identifier+"(")
-  yield arglist
-  @f.write(");\n")  
+def callnode(identifier, arglist, expression="")
+  if identifier=='new' && expression!=''
+    @f.write("$"+identifier+" = new "+expression+"(")
+    yield arglist
+    @f.write(");\n")
+  elsif expression!=''
+    @f.write("$"+expression.to_s+"->"+identifier+"(")
+    yield arglist
+    @f.write(");\n")
+  else
+    @f.write(identifier+"(")
+    yield arglist
+    @f.write(");\n")
+  end
+end
+
+def setlocalnode(name, value)
+  @f.write("$"+name+' = ')
+  yield value
+  if !value.instance_of?(CallNode)
+    @f.write(";\n")
+  end
 end
 
 def nodenode(nod)
@@ -65,6 +83,7 @@ end
 
 def node(objet)
   
+  # if true:
   if objet.instance_of?(IfNode)
     ifnode(objet.instance_variable_get(:@condition), objet.instance_variable_get(:@body)) do |txt|
       if txt.is_a?(Awesome)
@@ -77,6 +96,7 @@ def node(objet)
     end
   end
   
+  # class Name:
   if objet.instance_of?(ClassNode)
     classnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
       if txt.is_a?(Awesome)
@@ -89,6 +109,7 @@ def node(objet)
     end
   end
   
+  # def methode:
   if objet.instance_of?(DefNode)
     defnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@params), objet.instance_variable_get(:@body)) do |txt|
       if txt.is_a?(Awesome)
@@ -101,8 +122,22 @@ def node(objet)
     end
   end
   
+  # objet.method(args)
   if objet.instance_of?(CallNode)
     callnode(objet.instance_variable_get(:@method), objet.instance_variable_get(:@arguments)) do |txt|
+      if txt.is_a?(Awesome)
+        node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
+      else
+        @f.write(txt)
+      end
+    end
+  end
+  
+  # var = value
+  if objet.instance_of?(SetLocalNode)
+    setlocalnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@value)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
