@@ -52,7 +52,6 @@ def classnode(name, body)
 end
 
 def defnode(name, params, body)
-  # puts "function "
   @f.write('function ')
   yield name
   @f.write('(')
@@ -62,6 +61,12 @@ def defnode(name, params, body)
   # puts "}"
   @f.write('}')
   body
+end
+
+def callnode(identifier, arglist, expression={})
+  @f.write(identifier+"(")
+  yield arglist
+  @f.write(");")  
 end
 
 def nodenode(nod)
@@ -111,15 +116,15 @@ def node(objet)
   end
   
   if objet.instance_of?(CallNode)
-    # literalnode(objet.instance_variable_get(:@value)) do |txt|
-    #   if txt.is_a?(Awesome)
-    #     node(txt)
-    #   elsif(txt.instance_of?(Array))
-    #     txt.each {|tx| node(tx)}
-    #   else
-    #     @f.write(txt)
-    #   end
-    # end
+    callnode(objet.instance_variable_get(:@method), objet.instance_variable_get(:@arguments)) do |txt|
+      if txt.is_a?(Awesome)
+        node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
+      else
+        @f.write(txt)
+      end
+    end
   end
   
   if objet.instance_of?(Nodes)
