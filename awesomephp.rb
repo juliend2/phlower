@@ -1,18 +1,11 @@
 require "parser.rb"
 
-code = <<-EOS
-class Awesome:
-  def initialize(name):
-    pass()
-  
-  def x:
-    return(2)
-
-if true:
-  aw = Awesome.new("brilliant!")
-else:
-  weird()
-EOS
+code = ''
+File.open('input.aw', 'r') do |file|  
+  while line = file.gets  
+    code << line  
+  end  
+end
 
 
 
