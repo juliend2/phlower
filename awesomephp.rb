@@ -61,14 +61,14 @@ def callnode(identifier, arglist, expression="")
   else
     @f.write(identifier+"(")
     yield arglist
-    @f.write(")")
+    @f.write(");\n")
   end
 end
 
 def setlocalnode(name, value)
   @f.write("$"+name+' = ')
   yield value
-  if value.instance_of?(CallNode)
+  if !value.instance_of?(CallNode)
     @f.write(";\n")
   end
 end
