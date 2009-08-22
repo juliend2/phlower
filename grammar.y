@@ -12,6 +12,8 @@ token IDENTIFIER
 token CONSTANT
 token INDENT DEDENT
 
+# racc -o parser.rb grammar.y   <-- to regenerate the parser.rb
+
 rule
   # All rules are declared in this format:
   #
@@ -70,6 +72,9 @@ rule
   BinaryOperator: 
     "+" 
   | "-" 
+  | "*"
+  | "/"
+  | "%"
   ; 
   
   # A method call
@@ -96,7 +101,7 @@ rule
     CONSTANT                      { result = GetConstantNode.new(val[0]) }
   ;
   
-  # Assignation to variables or contants
+  # Assignation to variables or constants
   Assign:
     IDENTIFIER "=" Expression     { result = SetLocalNode.new(val[0], val[2]) }
   | CONSTANT "=" Expression       { result = SetConstantNode.new(val[0], val[2]) }

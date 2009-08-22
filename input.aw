@@ -6,14 +6,15 @@ class Awesome:
     pass()
   
   def x:
-    return(2+2-3)
+    return(2 + 2 - 3 * 8 / 6 % 2)
 
   def z:
     print("poulet")
 
 if true:
   aw = Awesome.new("brilliant!",2)
-  print(aw.x)
+  awe = aw.x()
+  print(awe)
 else:
   weird()
 

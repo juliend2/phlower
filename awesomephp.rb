@@ -60,17 +60,25 @@ def callnode(identifier, arglist, receiver)
   # 2+2
   elsif !(receiver.nil?)
     if identifier=='+'
-      @c << "("
       yield receiver
-      @c << "+"
+      @c << " + "
       yield arglist
-      @c << ")"
     elsif identifier=='-'
-      @c << "("
       yield receiver
-      @c << "-"
+      @c << " - "
       yield arglist
-      @c << ")"
+    elsif identifier=='*'
+      yield receiver
+      @c << " * "
+      yield arglist
+    elsif identifier=='/'
+      yield receiver
+      @c << " / "
+      yield arglist
+    elsif identifier=='%'
+      yield receiver
+      @c << " % "
+      yield arglist
     else
       @c << "$"+receiver.instance_variable_get(:@method).to_s+"->"+identifier+"("
       arglist.each_with_index do |arg, count|

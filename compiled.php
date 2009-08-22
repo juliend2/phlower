@@ -11,7 +11,7 @@ pass();
 }
 
 function x(){
-return((2+(2-3)));
+return(2 + 2 - 3 * 8 / 6 % 2);
 }
 
 function z(){
@@ -22,7 +22,7 @@ print("poulet");
 
 if (true) {
 $aw = new Awesome("brilliant!",2);
-print($aw->x();
+$awe = print(awe();
 );
 } else {
 weird();
