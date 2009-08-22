@@ -58,7 +58,12 @@ def callnode(identifier, arglist, expression="")
     @f.write(");\n")
   elsif expression!=''
     @f.write("$"+expression.to_s+"->"+identifier+"(")
-    yield arglist
+    arglist.each_with_index do |arg, count|
+      yield arg
+      if count<(arglist.length-1)
+        @f.write(",")
+      end
+    end
     @f.write(");\n")
   else
     @f.write(identifier+"(")
@@ -75,8 +80,14 @@ def setlocalnode(name, value)
   else
     if value.instance_variable_get(:@method).to_s == 'new'
       @f.write("new "+(value.instance_variable_get(:@receiver)).instance_variable_get(:@name).to_s+"(")
-      yield value.instance_variable_get(:@arguments)
-      puts value.instance_variable_get(:@arguments)
+      # yield value.instance_variable_get(:@arguments)
+      len = value.instance_variable_get(:@arguments).length
+      (value.instance_variable_get(:@arguments)).each_with_index do |arg, count|
+        yield arg
+        if count<(len-1)
+          @f.write(",")
+        end
+      end
       @f.write(")\n")
     end
   end
@@ -91,7 +102,15 @@ def nodenode(nod)
 end
 
 def literalnode(node)
-  yield node
+  # puts node.class
+  if node.instance_of?(String)
+    @f.write('"')
+    yield node
+    @f.write('"')
+  else
+    yield node
+  end
+  
 end
 
 def node(objet)
