@@ -276,7 +276,6 @@ class AwesomePHP
           returned << node(object)  unless node(object).nil?
         end
       end
-      
     else
       # input
       @c = ''
