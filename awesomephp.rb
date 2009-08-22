@@ -1,6 +1,10 @@
 require "parser.rb"
-require "test/unit"
 
+# 
+# Synopsis : ruby awesomephp.rb input.aw compiled.php
+# input.aw = awesome input file
+# compiled.php = php output file
+# 
 
 def ifarg(objet)
   objet.instance_variable_get(:@value)
@@ -248,38 +252,63 @@ def node(objet)
   end
 end
 
+
 class AwesomePHP
-  def initialize(inputfile, outputfile)
+  def initialize(inputfile, outputfile=false, isstring=false)
     @input = inputfile
     @output = outputfile
+    @isstring = isstring
+    
+    if @isstring==true && @output==false
+      puts 'from string'
+      puts
+      
+      # input
+      code = @input
+
+      p objects = Parser.new.parse(code)
+
+      # output
+      returned = ''
+      if objects.instance_of?(Nodes)
+        objarray = objects.instance_variable_get(:@nodes)
+        objarray.each do |object|
+          returned << node(object)
+        end
+      end
+      
+    else
+      # input
+      code = ''
+      File.open(@input, 'r') do |file|  
+        while line = file.gets  
+          code << line  
+        end  
+      end
+
+      p objects = Parser.new.parse(code)
+
+      # output
+      @f = File.open(@output, "w")
+      @f.write("<?php\n\n")
+      if objects.instance_of?(Nodes)
+        objarray = objects.instance_variable_get(:@nodes)
+        objarray.each do |object|
+          @f.write( node(object))
+        end
+      end
+      @f.close() 
+    end
   end
   
-  def parse
-    # input
-    code = ''
-    File.open(@input, 'r') do |file|  
-      while line = file.gets  
-        code << line  
-      end  
-    end
-    
-    p objects = Parser.new.parse(code)
-
-    # output
-    @f = File.open(@output, "w")
-    @f.write("<?php\n\n")
-    if objects.instance_of?(Nodes)
-      objarray = objects.instance_variable_get(:@nodes)
-      objarray.each do |object|
-        @f.write( node(object))
-      end
-    end
-    @f.close()
-  end
 end
 
-parsing = AwesomePHP.new(ARGV[0], ARGV[1])
-parsing.parse()
+
+# Call the parser if we called this file by the command line :
+if ARGV[0] && ARGV[1]
+  parsing = AwesomePHP.new(ARGV[0], ARGV[1])
+end
+
 
 #<Nodes:0x8fb60 @nodes=[
 # #<ClassNode:0x8fbb0 @name="Awesome", @body=#<Nodes:0x8fc14 @nodes=[
