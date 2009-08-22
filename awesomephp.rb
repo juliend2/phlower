@@ -50,8 +50,10 @@ def defnode(name, params, body)
 end
 
 def callnode(identifier, arglist, expression="")
-  if identifier=='new' && expression!=''
-    @f.write("$"+identifier+" = new "+expression+"(")
+  if identifier=='new' && expression!='' && expression.instance_of?(GetConstantNode)
+    @f.write("$"+identifier+" = new ")
+    yield expression
+    @f.write("(")
     yield arglist
     @f.write(");\n")
   elsif expression!=''
@@ -66,11 +68,17 @@ def callnode(identifier, arglist, expression="")
 end
 
 def setlocalnode(name, value)
-  @f.write("$"+name+' = ')
-  yield value
-  if !value.instance_of?(CallNode)
+  if value.instance_of?(CallNode)
+    yield value
+  else
+    @f.write("$"+name+' = ')
+    
     @f.write(";\n")
   end
+end
+
+def getconstantnode(name)
+  @f.write(name)
 end
 
 def nodenode(nod)
@@ -82,6 +90,23 @@ def literalnode(node)
 end
 
 def node(objet)
+  
+  if objet.instance_of?(CallNode)
+    puts objet.inspect
+    puts
+  end
+  
+  if objet.instance_of?(GetConstantNode)
+    getconstantnode(objet.instance_variable_get(:@name)) do |txt|
+      if txt.is_a?(Awesome)
+        node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
+      else
+        @f.write(txt)
+      end
+    end
+  end
   
   # if true:
   if objet.instance_of?(IfNode)
@@ -124,7 +149,7 @@ def node(objet)
   
   # objet.method(args)
   if objet.instance_of?(CallNode)
-    callnode(objet.instance_variable_get(:@method), objet.instance_variable_get(:@arguments)) do |txt|
+    callnode(objet.instance_variable_get(:@method), objet.instance_variable_get(:@arguments), objet.instance_variable_get(:@receiver)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -186,28 +211,6 @@ if objects.instance_of?(Nodes)
   end
 end
 @f.close()
-
-#<Nodes:0x8ff34 @nodes=[
-# #<ClassNode:0x8ff84 @body=#<Nodes:0x8ffe8 @nodes=[
-#   #<Nodes:0x901a0 @nodes=[
-#     #<Nodes:0x90204 @nodes=[
-#       #<DefNode:0x90254 @body=#<Nodes:0x902b8 @nodes=[
-#         #<CallNode:0x9031c @arguments=[], @method="pass", @receiver=nil>
-#       ]>, @params=["name"], @name="initialize">
-#     ]>, 
-#     #<DefNode:0x90088 @body=#<Nodes:0x90100 @nodes=[
-#       #<LiteralNode:0x90150 @value=3>
-#     ]>, @params=[], @name="x">
-#   ]>
-# ]>, @name="Awesome">, 
-# #<IfNode:0x8fc00 @body=#<Nodes:0x8fd2c @nodes=[
-#   #<SetLocalNode:0x8fd7c @name="aw", @value=#<CallNode:0x8fdcc @arguments=[
-#     #<LiteralNode:0x8fe44 @value="brilliant!">
-#   ], @method="new", @receiver=#<GetConstantNode:0x8fe94 @name="Awesome">>>
-# ]>, @condition=#<LiteralNode:0x8fee4 @value=true>, @else_body=#<Nodes:0x8fc64 @nodes=[
-#   #<CallNode:0x8fcc8 @arguments=[], @method="weird", @receiver=nil>
-# ]>>
-# ]>
 
 
 #<Nodes:0x8fb60 @nodes=[
