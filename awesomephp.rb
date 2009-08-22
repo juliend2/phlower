@@ -15,112 +15,112 @@ def ifbody(objet)
 end
 
 def ifnode(arg, body)
-  @f.write("if (")
+  @c << "if ("
   yield arg
-  @f.write(") {\n")
+  @c << ") {\n"
   yield body
-  @f.write("}\n")
+  @c << "}\n"
   body
 end
 
 def classnode(name, body)
-  @f.write('class ')
+  @c << 'class '
   yield name
-  @f.write("{\n\n")
+  @c << "{\n\n"
   yield body
-  @f.write("}\n\n")
+  @c << "}\n\n"
   body
 end
 
 def defnode(name, params, body)
-  @f.write('function ')
+  @c << 'function '
   if name=='init'
-    @f.write('__construct')
+    @c << '__construct'
   else
-    @f.write(name)
+    @c << name
   end
-  @f.write('(')
+  @c << '('
   yield params
-  @f.write("){\n")
+  @c << "){\n"
   yield body
-  @f.write("}\n\n")
+  @c << "}\n\n"
   body
 end
 
 def callnode(identifier, arglist, receiver)
   # new Class(args)
   if identifier=='new' && receiver!='' && receiver.instance_of?(GetConstantNode)
-    @f.write("$"+identifier+" = new ")
+    @c << "$"+identifier+" = new "
     yield receiver
-    @f.write("(")
+    @c << "("
     arglist.each_with_index do |arg, count|
       yield arg
       if count<(arglist.length-1)
-        @f.write(",")
+        @c << ","
       end
     end
-    @f.write(");\n")
+    @c << ");\n"
   # obj.method(args)
   # OR
   # 2+2
   elsif !(receiver.nil?)
     if identifier=='+'
-      @f.write("(")
+      @c << "("
       yield receiver
-      @f.write("+")
+      @c << "+"
       yield arglist
-      @f.write(")")
+      @c << ")"
     elsif identifier=='-'
-      @f.write("(")
+      @c << "("
       yield receiver
-      @f.write("-")
+      @c << "-"
       yield arglist
-      @f.write(")")
+      @c << ")"
     else
-      @f.write("$"+receiver.instance_variable_get(:@method).to_s+"->"+identifier+"(")
+      @c << "$"+receiver.instance_variable_get(:@method).to_s+"->"+identifier+"("
       arglist.each_with_index do |arg, count|
         yield arg
         if count<(arglist.length-1)
-          @f.write(",")
+          @c << ","
         end
       end
-      @f.write(");\n")
+      @c << ");\n"
     end
   else
-    @f.write(identifier+"(")
+    @c << identifier+"("
     arglist.each_with_index do |arg, count|
       yield arg
       if count<(arglist.length-1)
-        @f.write(",")
+        @c << ","
       end
     end
-    @f.write(");\n")
+    @c << ");\n"
   end
 end
 
 def setlocalnode(name, value)
-  @f.write("$"+name+' = ')
+  @c << "$"+name+' = '
   if !value.instance_of?(CallNode)
     yield value
-    @f.write(";\n")
+    @c << ";\n"
   else
     if value.instance_variable_get(:@method).to_s == 'new'
-      @f.write("new "+(value.instance_variable_get(:@receiver)).instance_variable_get(:@name).to_s+"(")
+      @c << "new "+(value.instance_variable_get(:@receiver)).instance_variable_get(:@name).to_s+"("
       # yield value.instance_variable_get(:@arguments)
       len = value.instance_variable_get(:@arguments).length
       (value.instance_variable_get(:@arguments)).each_with_index do |arg, count|
         yield arg
         if count<(len-1)
-          @f.write(",")
+          @c << ","
         end
       end
-      @f.write(");\n")
+      @c << ");\n"
     end
   end
 end
 
 def getconstantnode(name)
-  @f.write(name)
+  @c << name
 end
 
 def nodenode(nod)
@@ -130,9 +130,9 @@ end
 def literalnode(node)
   # puts node.class
   if node.instance_of?(String)
-    @f.write('"')
+    @c << '"'
     yield node
-    @f.write('"')
+    @c << '"'
   else
     yield node
   end
@@ -153,7 +153,7 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt
       end
     end
   end
@@ -166,7 +166,7 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt
       end
     end
   end
@@ -179,7 +179,7 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt
       end
     end
   end
@@ -192,7 +192,7 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt
       end
     end
   end
@@ -205,7 +205,7 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt
       end
     end
   end
@@ -218,7 +218,7 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt
       end
     end
   end
@@ -230,7 +230,7 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt
       end
     end
   end
@@ -242,13 +242,13 @@ def node(objet)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @f.write(txt)
+        @c << txt.to_s
       end
     end
   end
   
   if objet.instance_of?(String)
-    @f.write('"' + objet + '"')
+    @c << '"' + objet + '"'
   end
 end
 
@@ -262,7 +262,7 @@ class AwesomePHP
     if @isstring==true && @output==false
       puts 'from string'
       puts
-      
+      @c = ''
       # input
       code = @input
 
@@ -273,30 +273,32 @@ class AwesomePHP
       if objects.instance_of?(Nodes)
         objarray = objects.instance_variable_get(:@nodes)
         objarray.each do |object|
-          returned << node(object)
+          returned << node(object)  unless node(object).nil?
         end
       end
       
     else
       # input
+      @c = ''
       code = ''
       File.open(@input, 'r') do |file|  
         while line = file.gets  
-          code << line  
+          code << line unless line.nil?
         end  
       end
 
-      p objects = Parser.new.parse(code)
+      p objects = Parser.new.parse(code)  unless code.nil?
 
       # output
-      @f = File.open(@output, "w")
-      @f.write("<?php\n\n")
+      @c << "<?php\n\n"
       if objects.instance_of?(Nodes)
         objarray = objects.instance_variable_get(:@nodes)
         objarray.each do |object|
-          @f.write( node(object))
+          @c << node(object)  unless node(object).nil?
         end
       end
+      @f = File.open(@output, "w")
+      @f.write(@c)
       @f.close() 
     end
   end
