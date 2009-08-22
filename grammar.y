@@ -24,6 +24,8 @@ rule
   # - Assign to "result" the value returned by the rule.
   # - Use val[index of expression] to reference expressions on the left.
   
+
+  
   
   # All parsing will end in this rule, being the trunk of the AST.
   Root:
@@ -64,6 +66,12 @@ rule
   | NIL                           { result = LiteralNode.new(nil) }
   ;
   
+  # operateurs mathematiques :
+  BinaryOperator: 
+    "+" 
+  | "-" 
+  ; 
+  
   # A method call
   Call:
     # method
@@ -75,6 +83,7 @@ rule
     # receiver.method(arguments)
   | Expression "."
       IDENTIFIER "(" ArgList ")"  { result = CallNode.new(val[0], val[2], val[4]) }
+  | Expression BinaryOperator Expression  { result = CallNode.new(val[0], val[1], [val[2]]) } 
   ;
   
   ArgList:
@@ -92,7 +101,7 @@ rule
     IDENTIFIER "=" Expression     { result = SetLocalNode.new(val[0], val[2]) }
   | CONSTANT "=" Expression       { result = SetConstantNode.new(val[0], val[2]) }
   ;
-  
+    
   # Method definition
   Def:
     DEF IDENTIFIER Block          { result = DefNode.new(val[1], [], val[2]) }

@@ -53,10 +53,11 @@ def defnode(name, params, body)
   body
 end
 
-def callnode(identifier, arglist, expression)
-  if identifier=='new' && expression!='' && expression.instance_of?(GetConstantNode)
+def callnode(identifier, arglist, receiver)
+  # new Class(args)
+  if identifier=='new' && receiver!='' && receiver.instance_of?(GetConstantNode)
     @f.write("$"+identifier+" = new ")
-    yield expression
+    yield receiver
     @f.write("(")
     arglist.each_with_index do |arg, count|
       yield arg
@@ -65,15 +66,32 @@ def callnode(identifier, arglist, expression)
       end
     end
     @f.write(");\n")
-  elsif !(expression.nil?)
-    @f.write("$"+expression.to_s+"->"+identifier+"(")
-    arglist.each_with_index do |arg, count|
-      yield arg
-      if count<(arglist.length-1)
-        @f.write(",")
+  # obj.method(args)
+  # OR
+  # 2+2
+  elsif !(receiver.nil?)
+    if identifier=='+'
+      @f.write("(")
+      yield receiver
+      @f.write("+")
+      yield arglist
+      @f.write(")")
+    elsif identifier=='-'
+      @f.write("(")
+      yield receiver
+      @f.write("-")
+      yield arglist
+      @f.write(")")
+    else
+      @f.write("$"+receiver.instance_variable_get(:@method).to_s+"->"+identifier+"(")
+      arglist.each_with_index do |arg, count|
+        yield arg
+        if count<(arglist.length-1)
+          @f.write(",")
+        end
       end
+      @f.write(");\n")
     end
-    @f.write(");\n")
   else
     @f.write(identifier+"(")
     arglist.each_with_index do |arg, count|

@@ -11,11 +11,16 @@ pass();
 }
 
 function x(){
-return(2);
+return((2+(2-3)));
+}
+
+function z(){
+print("poulet");
 }
 
 }
 
 if (true) {
 $aw = new Awesome("brilliant!",2);
+$aw->x();
 }
