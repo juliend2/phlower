@@ -11,7 +11,8 @@ class Awesome:
   def z():
     print("poulet")
 
-if true:
+poulet = true
+if poulet:
   aw = Awesome.new("brilliant!",2)
   awe = aw.x()
   print(awe)

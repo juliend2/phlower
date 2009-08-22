@@ -20,7 +20,8 @@ print("poulet");
 
 }
 
-if (true) {
+$poulet = true;
+if ($poulet) {
 $aw = $new = new Awesome("brilliant!",2);
 $awe = $aw->x();
 print($awe);
