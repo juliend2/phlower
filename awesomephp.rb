@@ -72,7 +72,7 @@ def setlocalnode(name, value)
     yield value
   else
     @f.write("$"+name+' = ')
-    
+    yield value
     @f.write(";\n")
   end
 end
