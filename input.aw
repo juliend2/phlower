@@ -14,6 +14,7 @@ class Awesome:
 if true:
   aw = Awesome.new("brilliant!",2)
   awe = aw.x()
+  print(awe)
 else:
   weird()
 

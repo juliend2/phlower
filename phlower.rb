@@ -80,7 +80,8 @@ def callnode(identifier, arglist, receiver)
       @c << " % "
       yield arglist
     else
-      @c << "$"+receiver.instance_variable_get(:@method).to_s+"->"+identifier+"("
+      yield receiver
+      @c << "->"+identifier+"("
       arglist.each_with_index do |arg, count|
         yield arg
         if count<(arglist.length-1)
@@ -115,6 +116,11 @@ end
 
 def nodenode(nod)
   yield nod
+end
+
+def varnode(node)
+  @c << "$"
+  yield node
 end
 
 def literalnode(node)
@@ -195,6 +201,19 @@ def node(objet)
     callnode(objet.instance_variable_get(:@method), 
     objet.instance_variable_get(:@arguments), 
     objet.instance_variable_get(:@receiver)) do |txt|
+      if txt.is_a?(Awesome)
+        node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
+      else
+        @c << txt
+      end
+    end
+  end
+  
+  # variable
+  if objet.instance_of?(VarNode)
+    varnode(objet.instance_variable_get(:@name)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))

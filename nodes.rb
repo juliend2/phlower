@@ -47,6 +47,17 @@ class LiteralNode < Awesome
   end
 end
 
+class VarNode < Awesome
+  def initialize(name)
+    @name = name
+  end
+  
+  def eval(context)
+    context[@name]
+  end
+end
+    
+
 # Node of a method call or local variable access,
 # can take any of these forms:
 # 

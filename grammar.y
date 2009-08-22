@@ -47,6 +47,7 @@ rule
   Expression:
     Literal
   | Call
+  | Var
   | Constant
   | Assign
   | Def
@@ -77,12 +78,15 @@ rule
   | "%"
   ; 
   
+  Var:
+  # variable :
+  IDENTIFIER                    { result = VarNode.new(val[0]) }
+  ;
+  
   # A method call
   Call:
-    # method
-    IDENTIFIER                    { result = CallNode.new(nil, val[0]) }
-    # method(arguments)
-  | IDENTIFIER "(" ArgList ")"    { result = CallNode.new(nil, val[0], val[2]) }
+   # method(arguments)
+   IDENTIFIER "(" ArgList ")"    { result = CallNode.new(nil, val[0], val[2]) }
     # receiver.method
   | Expression "." IDENTIFIER     { result = CallNode.new(val[0], val[2]) }
     # receiver.method(arguments)
