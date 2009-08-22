@@ -1,25 +1,57 @@
+                    __
+                .-.'  '.-.
+             .-(   \  /   )-.
+            /   '..pHPh..'   \
+    ,       \.--.hPHPHPHp.--./
+    |\  ,   (   :hPHPHPHp:   )
+   _\.\/|   /'--'pPHPHPHp'--'\
+   '-.. ;/| \   .''pHPh''.   /
+   .--`'. :/|'-(   /  \   )-'
+    '--. `. / //'-'.__.'-;
+      `'-,_';//      ,  /|
+           '((       |\/./_
+             \\  . |\; ..-'
+              \\ |\: .'`--.
+               \\, .' .--'
+                ))'_,-'`
+               //-'
+              // 
+             //
+            |/
+
 ==Introduction==
-phlower is a small ruby script that compiles the Awesome code (invented by MACournoyer) into PHP code.
+phlower (pronounced flower) is a small ruby script that compiles the Awesome code (invented by MACournoyer) into PHP code.
 This script is written in Ruby and it uses the racc gem.
 
 ==Usage==
 
-input.aw file should contain the Awesome code :
-def pass():
-  echo("joie")
-  
+input.aw file should contain your Awesome input code :
+ 
 class Awesome:
   def init():
-    pass()
+    return("Poulet")
   
-  def x:
-    return("Poulet",2)
-
 if true:
   aw = Awesome.new("brilliant!")
-  print(aw.x)
 else:
   weird()
 
+And :
+$ ruby phlower.rb input.aw compiled.php
 
-ruby phlower.rb input.aw compiled.php
+Should output this PHP code :
+<?php
+
+class Awesome{
+
+function __construct(){
+return("Poulet");
+}
+
+}
+
+if (true) {
+$aw = new Awesome("brilliant!",2);
+} else {
+weird();
+}
