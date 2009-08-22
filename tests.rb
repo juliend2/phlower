@@ -9,6 +9,7 @@ class TestAwesomePHP < Test::Unit::TestCase
     assert_equal("function __construct(){\npass();\n}\n\n", AwesomePHP.new("def init():
       pass()", false, true).instance_variable_get(:@c) )
     assert_equal("$awe = $aw->x();\n", AwesomePHP.new('awe = aw.x()', false, true).instance_variable_get(:@c) )
+    assert_equal("print($aw);\n", AwesomePHP.new('print(aw)', false, true).instance_variable_get(:@c) )
   end
 
 end
