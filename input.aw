@@ -13,7 +13,7 @@ class Awesome:
 
 if true:
   aw = Awesome.new("brilliant!",2)
-  aw.x
+  print(aw.x)
 else:
   weird()
 

@@ -22,5 +22,6 @@ print("poulet");
 
 if (true) {
 $aw = new Awesome("brilliant!",2);
-$aw->x();
+print($aw->x();
+);
 }

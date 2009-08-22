@@ -1,15 +1,5 @@
 require "parser.rb"
-
-code = ''
-File.open('input.aw', 'r') do |file|  
-  while line = file.gets  
-    code << line  
-  end  
-end
-
-
-
-p objects = Parser.new.parse(code)
+require "test/unit"
 
 
 def ifarg(objet)
@@ -258,17 +248,38 @@ def node(objet)
   end
 end
 
+class AwesomePHP
+  def initialize(inputfile, outputfile)
+    @input = inputfile
+    @output = outputfile
+  end
+  
+  def parse
+    # input
+    code = ''
+    File.open(@input, 'r') do |file|  
+      while line = file.gets  
+        code << line  
+      end  
+    end
+    
+    p objects = Parser.new.parse(code)
 
-@f = File.open("compiled.php", "w")
-@f.write("<?php\n\n")
-if objects.instance_of?(Nodes)
-  objarray = objects.instance_variable_get(:@nodes)
-  objarray.each do |object|
-    @f.write( node(object))
+    # output
+    @f = File.open(@output, "w")
+    @f.write("<?php\n\n")
+    if objects.instance_of?(Nodes)
+      objarray = objects.instance_variable_get(:@nodes)
+      objarray.each do |object|
+        @f.write( node(object))
+      end
+    end
+    @f.close()
   end
 end
-@f.close()
 
+parsing = AwesomePHP.new(ARGV[0], ARGV[1])
+parsing.parse()
 
 #<Nodes:0x8fb60 @nodes=[
 # #<ClassNode:0x8fbb0 @name="Awesome", @body=#<Nodes:0x8fc14 @nodes=[
