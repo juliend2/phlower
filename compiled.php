@@ -24,4 +24,6 @@ if (true) {
 $aw = new Awesome("brilliant!",2);
 print($aw->x();
 );
+} else {
+weird();
 }

@@ -1,2 +1,25 @@
-a small ruby parser that converts the Awesome syntax (invented by MACournoyer) into PHP syntax.
-This script is written in Ruby and uses racc.
+==Introduction==
+A small ruby script that compiles the Awesome code (invented by MACournoyer) into PHP code.
+This script is written in Ruby and it uses the racc gem.
+
+==Usage==
+
+input.aw file should contain the Awesome code :
+def pass():
+  echo("joie")
+  
+class Awesome:
+  def init():
+    pass()
+  
+  def x:
+    return("Poulet",2)
+
+if true:
+  aw = Awesome.new("brilliant!")
+  print(aw.x)
+else:
+  weird()
+
+
+ruby awesomephp.rb input.aw compiled.php

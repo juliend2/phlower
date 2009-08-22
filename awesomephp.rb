@@ -6,21 +6,18 @@ require "parser.rb"
 # compiled.php = php output file
 # 
 
-def ifarg(objet)
-  objet.instance_variable_get(:@value)
-end
-
-def ifbody(objet)
-  puts objet
-end
-
-def ifnode(arg, body)
+def ifnode(arg, body, elsebody)
   @c << "if ("
   yield arg
   @c << ") {\n"
   yield body
-  @c << "}\n"
-  body
+  if !(elsebody.nil?)
+    @c << "} else {\n"
+    yield elsebody
+    @c << "}\n"
+  else
+    @c << "}\n"
+  end
 end
 
 def classnode(name, body)
@@ -29,7 +26,6 @@ def classnode(name, body)
   @c << "{\n\n"
   yield body
   @c << "}\n\n"
-  body
 end
 
 def defnode(name, params, body)
@@ -44,7 +40,6 @@ def defnode(name, params, body)
   @c << "){\n"
   yield body
   @c << "}\n\n"
-  body
 end
 
 def callnode(identifier, arglist, receiver)
@@ -136,7 +131,6 @@ def literalnode(node)
   else
     yield node
   end
-  
 end
 
 def node(objet)
@@ -160,7 +154,9 @@ def node(objet)
   
   # if true:
   if objet.instance_of?(IfNode)
-    ifnode(objet.instance_variable_get(:@condition), objet.instance_variable_get(:@body)) do |txt|
+    ifnode(objet.instance_variable_get(:@condition), 
+      objet.instance_variable_get(:@body), 
+      objet.instance_variable_get(:@else_body)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -173,7 +169,8 @@ def node(objet)
   
   # class Name:
   if objet.instance_of?(ClassNode)
-    classnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@body)) do |txt|
+    classnode(objet.instance_variable_get(:@name), 
+    objet.instance_variable_get(:@body)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -186,7 +183,9 @@ def node(objet)
   
   # def methode:
   if objet.instance_of?(DefNode)
-    defnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@params), objet.instance_variable_get(:@body)) do |txt|
+    defnode(objet.instance_variable_get(:@name), 
+    objet.instance_variable_get(:@params), 
+    objet.instance_variable_get(:@body)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -199,7 +198,9 @@ def node(objet)
   
   # objet.method(args)
   if objet.instance_of?(CallNode)
-    callnode(objet.instance_variable_get(:@method), objet.instance_variable_get(:@arguments), objet.instance_variable_get(:@receiver)) do |txt|
+    callnode(objet.instance_variable_get(:@method), 
+    objet.instance_variable_get(:@arguments), 
+    objet.instance_variable_get(:@receiver)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -212,7 +213,8 @@ def node(objet)
   
   # var = value
   if objet.instance_of?(SetLocalNode)
-    setlocalnode(objet.instance_variable_get(:@name), objet.instance_variable_get(:@value)) do |txt|
+    setlocalnode(objet.instance_variable_get(:@name), 
+    objet.instance_variable_get(:@value)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
