@@ -49,14 +49,19 @@ def defnode(name, params, body)
   body
 end
 
-def callnode(identifier, arglist, expression="")
+def callnode(identifier, arglist, expression)
   if identifier=='new' && expression!='' && expression.instance_of?(GetConstantNode)
     @f.write("$"+identifier+" = new ")
     yield expression
     @f.write("(")
-    yield arglist
+    arglist.each_with_index do |arg, count|
+      yield arg
+      if count<(arglist.length-1)
+        @f.write(",")
+      end
+    end
     @f.write(");\n")
-  elsif expression!=''
+  elsif !(expression.nil?)
     @f.write("$"+expression.to_s+"->"+identifier+"(")
     arglist.each_with_index do |arg, count|
       yield arg
@@ -67,7 +72,12 @@ def callnode(identifier, arglist, expression="")
     @f.write(");\n")
   else
     @f.write(identifier+"(")
-    yield arglist
+    arglist.each_with_index do |arg, count|
+      yield arg
+      if count<(arglist.length-1)
+        @f.write(",")
+      end
+    end
     @f.write(");\n")
   end
 end
@@ -88,7 +98,7 @@ def setlocalnode(name, value)
           @f.write(",")
         end
       end
-      @f.write(")\n")
+      @f.write(");\n")
     end
   end
 end
