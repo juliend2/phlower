@@ -68,12 +68,17 @@ def callnode(identifier, arglist, expression="")
 end
 
 def setlocalnode(name, value)
-  if value.instance_of?(CallNode)
-    yield value
-  else
-    @f.write("$"+name+' = ')
+  @f.write("$"+name+' = ')
+  if !value.instance_of?(CallNode)
     yield value
     @f.write(";\n")
+  else
+    if value.instance_variable_get(:@method).to_s == 'new'
+      @f.write("new "+(value.instance_variable_get(:@receiver)).instance_variable_get(:@name).to_s+"(")
+      yield value.instance_variable_get(:@arguments)
+      puts value.instance_variable_get(:@arguments)
+      @f.write(")\n")
+    end
   end
 end
 
