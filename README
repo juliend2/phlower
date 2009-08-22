@@ -55,3 +55,18 @@ $aw = new Awesome("brilliant!",2);
 } else {
 weird();
 }
+
+==FEATURES==
+Here are a few language features that phlower supports :
+* classes & methods
+* if..else
+* assignation operator
+* binary operators
+* string, boolean and int types
+* converts init() constructors to __construct() php's constructors
+
+==TODO==
+* indentation support
+* fix some end-of-line ";" quirks
+* variables that are inside parameters/conditions
+* comments

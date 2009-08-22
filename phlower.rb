@@ -321,27 +321,46 @@ if ARGV[0] && ARGV[1]
   parsing = AwesomePHP.new(ARGV[0], ARGV[1])
 end
 
-
-#<Nodes:0x8fb60 @nodes=[
-# #<ClassNode:0x8fbb0 @name="Awesome", @body=#<Nodes:0x8fc14 @nodes=[
-#   #<Nodes:0x8fe44 @nodes=[
-#     #<Nodes:0x8fea8 @nodes=[
-#       #<DefNode:0x8fef8 @name="initialize", @body=#<Nodes:0x8ff5c @nodes=[
-#         #<CallNode:0x8ffac @receiver=nil, @arguments=[], @method="pass">
-#       ]>, @params=["name"]>
-#     ]>, 
-#     #<DefNode:0x8fcb4 @name="x", @body=#<Nodes:0x8fd2c @nodes=[
-#       #<CallNode:0x8fd7c @receiver=nil, @arguments=[
-#         #<LiteralNode:0x8fdf4 @value=2>
-#       ], @method="return">
-#     ]>, @params=[]>
-#   ]>
-# ]>>, 
-# #<IfNode:0x8f804 @condition=#<LiteralNode:0x8fb10 @value=true>, @body=#<Nodes:0x8f958 @nodes=[
-#   #<SetLocalNode:0x8f9a8 @name="aw", @value=#<CallNode:0x8f9f8 @receiver=#<GetConstantNode:0x8fac0 @name="Awesome">, @arguments=[
-#     #<LiteralNode:0x8fa70 @value="brilliant!">
-#   ], @method="new">>
-# ]>, @else_body=#<Nodes:0x8f868 @nodes=[
-#   #<CallNode:0x8f8b8 @receiver=nil, @arguments=[], @method="weird">
-# ]>>
+#<Nodes:0x80ef8 @nodes=[
+# #<Nodes:0x81cf4 @nodes=[
+#   #<DefNode:0x81d44 @body=#<Nodes:0x81da8 @nodes=[
+#     #<Nodes:0x81e0c @nodes=[
+#       #<CallNode:0x81e5c @receiver=nil, @arguments=[
+#         #<LiteralNode:0x81ed4 @value="joie">
+#       ], @method="echo">
+#     ]>
+#   ]>, @name="pass", @params=[]>, 
+#   #<ClassNode:0x81538 @body=#<Nodes:0x8159c @nodes=[
+#     #<Nodes:0x817cc @nodes=[
+#       #<Nodes:0x81ac4 @nodes=[
+#         #<Nodes:0x81b28 @nodes=[
+#           #<DefNode:0x81b78 @body=#<Nodes:0x81bdc @nodes=[
+#             #<CallNode:0x81c2c @receiver=nil, @arguments=[], @method="pass">
+#           ]>, @name="init", @params=[]>
+#         ]>, #<DefNode:0x8186c @body=#<Nodes:0x818e4 @nodes=[
+#           #<CallNode:0x81934 @receiver=nil, @arguments=[
+#             #<CallNode:0x819ac @receiver=#<LiteralNode:0x81a74 @value=2>, @arguments=[
+#               #<LiteralNode:0x81a10 @value=2>
+#             ], @method="+">
+#           ], @method="return">
+#         ]>, @name="x", @params=[]>
+#       ]>, 
+#       #<DefNode:0x8163c @body=#<Nodes:0x816b4 @nodes=[
+#         #<CallNode:0x81704 @receiver=nil, @arguments=[
+#           #<LiteralNode:0x8177c @value="poulet">
+#         ], @method="print">
+#       ]>, @name="z", @params=[]>
+#     ]>
+#   ]>, @name="Awesome">, 
+#   #<IfNode:0x80fac @body=#<Nodes:0x8127c @nodes=[
+#     #<SetLocalNode:0x812cc @value=#<CallNode:0x8131c @receiver=#<GetConstantNode:0x8145c @name="Awesome">, @arguments=[
+#       #<LiteralNode:0x8140c @value="brilliant!">, 
+#       #<LiteralNode:0x81394 @value=2>
+#     ], @method="new">, @name="aw">, 
+#     #<SetLocalNode:0x8113c @value=#<CallNode:0x8118c @receiver=#<CallNode:0x8122c @receiver=nil, @arguments=[], @method="aw">, @arguments=[], @method="x">, @name="awe">
+#   ]>, @condition=#<LiteralNode:0x814ac @value=true>, @else_body=#<Nodes:0x81010 @nodes=[
+#     #<CallNode:0x81060 @receiver=nil, @arguments=[], @method="weird">
+#   ]>>
+# ]>
 #]>
+
