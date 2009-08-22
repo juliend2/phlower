@@ -40,7 +40,11 @@ end
 
 def defnode(name, params, body)
   @f.write('function ')
-  yield name
+  if name=='init'
+    @f.write('__construct')
+  else
+    @f.write(name)
+  end
   @f.write('(')
   yield params
   @f.write("){\n")
@@ -237,7 +241,8 @@ def node(objet)
 end
 
 
-@f = File.open("compiled.txt", "w")
+@f = File.open("compiled.php", "w")
+@f.write("<?php\n\n")
 if objects.instance_of?(Nodes)
   objarray = objects.instance_variable_get(:@nodes)
   objarray.each do |object|

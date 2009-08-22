@@ -1,9 +1,12 @@
+def pass():
+  echo("joie")
+  
 class Awesome:
-  def initialize(name):
+  def init():
     pass()
   
   def x:
-    return(2,3,"joy!")
+    return(2)
 
 if true:
   aw = Awesome.new("brilliant!",2)
