@@ -1,5 +1,5 @@
 ==Introduction==
-A small ruby script that compiles the Awesome code (invented by MACournoyer) into PHP code.
+phlower is a small ruby script that compiles the Awesome code (invented by MACournoyer) into PHP code.
 This script is written in Ruby and it uses the racc gem.
 
 ==Usage==
@@ -22,4 +22,4 @@ else:
   weird()
 
 
-ruby awesomephp.rb input.aw compiled.php
+ruby phlower.rb input.aw compiled.php
