@@ -5,10 +5,10 @@ class Awesome:
   def init():
     pass()
   
-  def x:
+  def x():
     return(2 + 2)
 
-  def z:
+  def z():
     print("poulet")
 
 if true:

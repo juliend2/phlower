@@ -21,7 +21,8 @@ print("poulet");
 }
 
 if (true) {
-$aw = new Awesome("brilliant!",2);
-$awe = } else {
+$aw = $new = new Awesome("brilliant!",2);
+$awe = $aw->x();
+} else {
 weird();
 }

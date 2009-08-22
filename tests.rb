@@ -1,4 +1,4 @@
-require 'awesomephp.rb'
+require 'phlower.rb'
 require "test/unit"
 
 class TestAwesomePHP < Test::Unit::TestCase
@@ -8,6 +8,7 @@ class TestAwesomePHP < Test::Unit::TestCase
     assert_equal("print(\"joie\");\n", AwesomePHP.new('print("joie")', false, true).instance_variable_get(:@c) )
     assert_equal("function __construct(){\npass();\n}\n\n", AwesomePHP.new("def init():
       pass()", false, true).instance_variable_get(:@c) )
+    assert_equal("$awe = $aw->x();\n", AwesomePHP.new('awe = aw.x()', false, true).instance_variable_get(:@c) )
   end
 
 end

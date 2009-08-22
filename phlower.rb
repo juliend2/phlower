@@ -103,22 +103,9 @@ end
 
 def setlocalnode(name, value)
   @c << "$"+name+' = '
-  if !value.instance_of?(CallNode)
-    yield value
+  yield value
+  if !value.instance_of?(CallNode)  
     @c << ";\n"
-  else
-    if value.instance_variable_get(:@method).to_s == 'new'
-      @c << "new "+(value.instance_variable_get(:@receiver)).instance_variable_get(:@name).to_s+"("
-      # yield value.instance_variable_get(:@arguments)
-      len = value.instance_variable_get(:@arguments).length
-      (value.instance_variable_get(:@arguments)).each_with_index do |arg, count|
-        yield arg
-        if count<(len-1)
-          @c << ","
-        end
-      end
-      @c << ");\n"
-    end
   end
 end
 
@@ -131,7 +118,6 @@ def nodenode(nod)
 end
 
 def literalnode(node)
-  # puts node.class
   if node.instance_of?(String)
     @c << '"'
     yield node
@@ -142,8 +128,8 @@ def literalnode(node)
 end
 
 def node(objet)
-  
-  if objet.instance_of?(CallNode)
+
+  if objet.instance_of?(SetLocalNode)
     puts objet.inspect
     puts
   end
@@ -270,8 +256,8 @@ class AwesomePHP
     @isstring = isstring
     
     if @isstring==true && @output==false
-      puts 'from string'
       puts
+      puts 'from string'
       @c = ''
       # input
       code = @input
@@ -363,4 +349,3 @@ end
 #   ]>>
 # ]>
 #]>
-
