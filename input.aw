@@ -14,7 +14,8 @@ class Awesome:
 poulet = true
 if poulet:
   aw = Awesome.new("brilliant!",2)
-  awe = aw.x()
+  pouti = aw.x()
+  awe = aw.init().x().z()
   print(awe)
 else:
   weird()
