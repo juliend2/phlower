@@ -46,7 +46,7 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
   
   # new Class(args)
   if identifier=='new' && receiver!='' && receiver.instance_of?(GetConstantNode)
-    @c << "$"+identifier+" = new "
+    @c << "new "
     yield receiver
     @c << "("
     arglist.each_with_index do |arg, count|

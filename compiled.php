@@ -22,7 +22,7 @@ print("poulet");
 
 $poulet = true;
 if ($poulet) {
-$aw = $new = new Awesome("brilliant!",2);
+$aw = new Awesome("brilliant!",2);
 $pouti = $aw->x();
 $awe = $aw->init()->x()->z();
 print($awe);
