@@ -70,3 +70,15 @@ Here are a few language features that phlower supports :
 * comments
 * object properties access
 * static class method access Class.method() => Class::method()
+* elsif
+* foreach
+* while, do..while
+* for
+* switch..case
+* try..catch
+* arrays
+* ++,--,+=,-=,*=,/=,.=,%=,!,!=,||,&&,==,>,<,<=,>= operators
+* break, continue
+* constants defined with define()
+* extends (for classes)
+* type casting , eq: (int)$var
