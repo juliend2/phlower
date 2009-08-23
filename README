@@ -68,6 +68,5 @@ Here are a few language features that phlower supports :
 ==TODO==
 * indentation support
 * comments
-* method chaining
 * object properties access
 * static class method access Class.method() => Class::method()

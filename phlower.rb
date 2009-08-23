@@ -95,7 +95,6 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
       if receiver_type.nil?
         @c << ";\n"
       end
-      
     end
   # function(args)
   else
