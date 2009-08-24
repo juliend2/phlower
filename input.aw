@@ -19,5 +19,5 @@ if poulet.to_i:
   print(awe)
 else:
   weird()
-  arr = []
+  arr = ["joie",2]
   

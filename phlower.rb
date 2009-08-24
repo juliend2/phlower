@@ -7,14 +7,11 @@ require "parser.rb"
 # 
 
 # can be : ext for external, arg for argument (if or method), body for body of a method/block :
-$where = 'ext'
 
 def ifnode(arg, body, elsebody)
   @c << "if ("
-  $where = 'arg'
   yield arg
   @c << ") {\n"
-  $where = 'body'
   yield body
   if !(elsebody.nil?)
     @c << "} else {\n"
@@ -29,7 +26,6 @@ def classnode(name, body)
   @c << 'class '
   yield name
   @c << "{\n\n"
-  $where = 'body'
   yield body
   @c << "}\n\n"
 end
@@ -42,10 +38,8 @@ def defnode(name, params, body)
     @c << name
   end
   @c << '('
-  $where = 'arg'
   yield params
   @c << "){\n"
-  $where = 'body'
   yield body
   @c << "}\n\n"
 end
@@ -57,19 +51,18 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
     @c << "new "
     yield receiver
     @c << "("
-    $where = 'arg'
     arglist.each_with_index do |arg, count|
       yield arg
       if count<(arglist.length-1)
         @c << ","
       end
     end
-    @c << ");\n"
+    @c << ")"
+    @c << ";\n"
   # obj.method(args)
   # OR
   # 2+2
   elsif !(receiver.nil?)
-    $where = 'arg'
     if identifier=='+'
       yield receiver
       @c << " + "
@@ -93,7 +86,6 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
     else
       yield receiver,receiver.class
       @c << "->"+identifier+"("
-      $where = 'arg'
       arglist.each_with_index do |arg, count|
         yield arg
         if count<(arglist.length-1)
@@ -101,14 +93,13 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
         end
       end
       @c << ")"
-      if receiver_type.nil? && $where!='arg'
+      if receiver_type.nil?
         @c << ";\n"
       end
     end
   # function(args)
   else
     @c << identifier+"("
-    $where = 'arg'
     arglist.each_with_index do |arg, count|
       yield arg
       if count<(arglist.length-1)
@@ -129,8 +120,12 @@ end
 
 def arraynode(values)
   @c << "array("
-  $where = 'arg'
-  yield values
+  values.each_with_index do |arg, count|
+    yield arg
+    if count<(values.length-1)
+      @c << ","
+    end
+  end
   @c << ")"
 end
 
