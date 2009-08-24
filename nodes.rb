@@ -97,6 +97,16 @@ class CallNode < Awesome
   end
 end
 
+class ArrayNode < Awesome
+  def initialize(arguments=[])
+    @values = arguments    
+  end
+  
+  def end(context)
+    context[@value]
+  end
+end
+
 # Retreiving the value of a constant.
 class GetConstantNode < Awesome
   def initialize(name)

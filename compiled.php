@@ -28,4 +28,5 @@ $awe = $aw->init()->x()->z();
 print($awe);
 } else {
 weird();
+$arr = array();
 }

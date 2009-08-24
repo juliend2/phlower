@@ -19,4 +19,5 @@ if poulet:
   print(awe)
 else:
   weird()
-
+  arr = []
+  

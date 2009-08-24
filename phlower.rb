@@ -6,6 +6,8 @@ require "parser.rb"
 # compiled.php = php output file
 # 
 
+$where = 'extern'
+
 def ifnode(arg, body, elsebody)
   @c << "if ("
   yield arg
@@ -81,8 +83,6 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
       @c << " % "
       yield arglist
     else
-      puts receiver_type
-      puts
       yield receiver,receiver.class
       @c << "->"+identifier+"("
       arglist.each_with_index do |arg, count|
@@ -117,6 +117,12 @@ def setlocalnode(name, value)
   end
 end
 
+def arraynode(values)
+  @c << "array("
+  yield values
+  @c << ")"
+end
+
 def getconstantnode(name)
   @c << name
 end
@@ -142,11 +148,21 @@ end
 
 def node(objet, receiver_type=nil)
 
-  # puts receiver_type
-
   if objet.instance_of?(SetLocalNode)
     # puts objet.inspect
     # puts
+  end
+  
+  if objet.instance_of?(ArrayNode)
+    arraynode(objet.instance_variable_get(:@values)) do |txt|
+      if txt.is_a?(Awesome)
+        node(txt)
+      elsif(txt.instance_of?(Array))
+        txt.each {|tx| node(tx)}
+      else
+        @c << txt
+      end
+    end
   end
   
   if objet.instance_of?(GetConstantNode)
@@ -209,13 +225,14 @@ def node(objet, receiver_type=nil)
   if objet.instance_of?(CallNode)
     callnode(objet.instance_variable_get(:@method), 
     objet.instance_variable_get(:@arguments), 
-    objet.instance_variable_get(:@receiver),receiver_type) do |txt, type|
+    objet.instance_variable_get(:@receiver),
+    receiver_type) do |txt, type|
       if txt.is_a?(Awesome)
         node(txt, type)
       elsif(txt.instance_of?(Array))
         txt.each {|tx,typ| node(tx,typ)}
       else
-        @c << txt
+        @c << txt unless txt.nil?
       end
     end
   end

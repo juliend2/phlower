@@ -53,6 +53,7 @@ rule
   | Def
   | Class
   | If
+  | Array
   ;
   
   # All tokens that can terminate an expression
@@ -93,6 +94,10 @@ rule
   | Expression "."
       IDENTIFIER "(" ArgList ")"  { result = CallNode.new(val[0], val[2], val[4]) }
   | Expression BinaryOperator Expression  { result = CallNode.new(val[0], val[1], [val[2]]) } 
+  ;
+  
+  Array:
+  |  "[" ArgList "]"               { result = ArrayNode.new(val[1]) }
   ;
   
   ArgList:
