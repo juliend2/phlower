@@ -12,7 +12,7 @@ class Awesome:
     print("poulet")
 
 poulet = true
-if poulet:
+if poulet.to_i:
   aw = Awesome.new("brilliant!",2)
   pouti = aw.x()
   awe = aw.init().x().z()
