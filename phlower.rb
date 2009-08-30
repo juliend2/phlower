@@ -118,12 +118,14 @@ def callnode(identifier, arglist, receiver, is_end)
   end
 end
 
-def setlocalnode(name, value)
+def setlocalnode(name, value, is_end)
   @c << "$"+name+' = '
   yield value
-  if !value.instance_of?(CallNode)  
+  # if !value.instance_of?(CallNode)  
+  if is_end
     @c << ";\n"
   end
+  # end
 end
 
 def arraynode(values)
@@ -267,7 +269,8 @@ def node(objet)
   # var = value
   if objet.instance_of?(SetLocalNode)
     setlocalnode(objet.instance_variable_get(:@name), 
-    objet.instance_variable_get(:@value)) do |txt|
+    objet.instance_variable_get(:@value),
+    objet.instance_variable_get(:@is_end)) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))

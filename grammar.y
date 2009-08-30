@@ -120,7 +120,8 @@ rule
   
   # Assignation to variables or constants
   Assign:
-    IDENTIFIER "=" Expression     { result = SetLocalNode.new(val[0], val[2]) }
+    IDENTIFIER "=" Expression     { result = SetLocalNode.new(val[0], val[2], false) }
+  | IDENTIFIER "=" Expression Terminator    { result = SetLocalNode.new(val[0], val[2], true) }
   | CONSTANT "=" Expression       { result = SetConstantNode.new(val[0], val[2]) }
   ;
   

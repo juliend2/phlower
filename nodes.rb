@@ -133,9 +133,10 @@ end
 
 # Setting the value of a local variable.
 class SetLocalNode < Awesome
-  def initialize(name, value)
+  def initialize(name, value, is_end)
     @name = name
     @value = value
+    @is_end = is_end
   end
   
   def eval(context)
