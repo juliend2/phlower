@@ -87,17 +87,19 @@ def callnode(identifier, arglist, receiver, is_end)
       yield arglist
     else
       yield receiver,receiver.class
-      @c << "->"+identifier+"("
-      puts arglist.inspect
-      puts receiver.inspect
-      puts identifier.inspect
-      arglist.each_with_index do |arg, count|
-        yield arg
-        if count<(arglist.length-1)
-          @c << ","
+      if arglist
+        @c << "->"+identifier+"("
+        arglist.each_with_index do |arg, count|
+          yield arg
+          if count<(arglist.length-1)
+            @c << ","
+          end
         end
+        @c << ")"
+      else
+        @c << "->"+identifier
       end
-      @c << ")"
+      
       if is_end
         @c << ";\n"
       end
@@ -119,7 +121,12 @@ def callnode(identifier, arglist, receiver, is_end)
 end
 
 def setlocalnode(name, value, is_end)
-  @c << "$"+name+' = '
+  if name[0,1] == '@'
+    @c << "var $"+name[1,name.length]+' = '
+  else
+    @c << "$"+name+' = '
+  end
+  
   yield value
   # if !value.instance_of?(CallNode)  
   if is_end
@@ -318,8 +325,6 @@ class AwesomePHP
     @isstring = isstring
     
     if @isstring==true && @output==false
-      puts
-      puts 'from string'
       @c = ''
       # input
       code = @input

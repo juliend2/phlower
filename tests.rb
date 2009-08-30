@@ -22,8 +22,8 @@ class TestAwesomePHP < Test::Unit::TestCase
     assert_equal("if ($aw->joie()) {\nprint()}\n", AwesomePHP.new("if aw.joie():\n  print()", false, true).instance_variable_get(:@c) )
     assert_equal("$aw = new Awesome(\"brilliant!\",2);\n", AwesomePHP.new("aw = Awesome.new(\"brilliant!\",2);\n", false, true).instance_variable_get(:@c) )
     assert_equal("$aw = new Awesome(\"brilliant!\",2)", AwesomePHP.new("aw = Awesome.new(\"brilliant!\",2)", false, true).instance_variable_get(:@c) )
-    assert_equal("var $poulet = \"joie\";\n", AwesomePHP.new('@poulet = "joie";\n', false, true).instance_variable_get(:@c) )
-    assert_equal("$this->poulet;\n", AwesomePHP.new('this.poulet', false, true).instance_variable_get(:@c) )
+    assert_equal("var $poulet = \"joie\";\n", AwesomePHP.new("@poulet = \"joie\";\n", false, true).instance_variable_get(:@c) )
+    assert_equal("$this->poulet;\n", AwesomePHP.new("this.poulet;\n", false, true).instance_variable_get(:@c) )
   end
 
 end

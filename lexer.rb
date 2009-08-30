@@ -26,7 +26,7 @@ class Lexer
       # Matching standard tokens.
       #
       # Matching if, print, method names, etc.
-      if identifier = chunk[/\A([_a-z]\w*)/, 1]
+      if identifier = chunk[/\A([_a-z@]\w*)/, 1]
         # Keywords are special identifiers tagged with their own
         # name, 'if' will result in an [:IF, "if"] token
         if KEYWORDS.include?(identifier)
