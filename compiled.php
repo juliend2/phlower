@@ -21,8 +21,7 @@ print("poulet");
 }
 
 $poulet = true;
-if ($poulet->to_i();
-) {
+if ($poulet->to_i()) {
 $aw = new Awesome("brilliant!",2);
 $pouti = $aw->x();
 $awe = $aw->init()->x()->z();

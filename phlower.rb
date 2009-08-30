@@ -44,7 +44,7 @@ def defnode(name, params, body)
   @c << "}\n\n"
 end
 
-def callnode(identifier, arglist, receiver, receiver_type=nil)
+def callnode(identifier, arglist, receiver, is_end)
   
   # new Class(args)
   if identifier=='new' && receiver!='' && receiver.instance_of?(GetConstantNode)
@@ -58,7 +58,9 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
       end
     end
     @c << ")"
-    @c << ";\n"
+    if is_end
+      @c << ";\n"
+    end
   # obj.method(args)
   # OR
   # 2+2
@@ -86,6 +88,9 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
     else
       yield receiver,receiver.class
       @c << "->"+identifier+"("
+      puts arglist.inspect
+      puts receiver.inspect
+      puts identifier.inspect
       arglist.each_with_index do |arg, count|
         yield arg
         if count<(arglist.length-1)
@@ -93,7 +98,7 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
         end
       end
       @c << ")"
-      if receiver_type.nil?
+      if is_end
         @c << ";\n"
       end
     end
@@ -106,7 +111,10 @@ def callnode(identifier, arglist, receiver, receiver_type=nil)
         @c << ","
       end
     end
-    @c << ");\n"
+    @c << ")"
+    if is_end
+      @c << ";\n"
+    end
   end
 end
 
@@ -152,7 +160,7 @@ def literalnode(node)
   end
 end
 
-def node(objet, receiver_type=nil)
+def node(objet)
 
   if objet.instance_of?(SetLocalNode)
     # puts objet.inspect
@@ -166,7 +174,7 @@ def node(objet, receiver_type=nil)
       elsif(txt.instance_of?(Array))
         txt.each {|tx| node(tx)}
       else
-        @c << txt
+        @c << txt unless txt.nil?
       end
     end
   end
@@ -232,11 +240,11 @@ def node(objet, receiver_type=nil)
     callnode(objet.instance_variable_get(:@method), 
     objet.instance_variable_get(:@arguments), 
     objet.instance_variable_get(:@receiver),
-    receiver_type) do |txt, type|
+    objet.instance_variable_get(:@is_end)) do |txt, type|
       if txt.is_a?(Awesome)
-        node(txt, type)
+        node(txt)
       elsif(txt.instance_of?(Array))
-        txt.each {|tx,typ| node(tx,typ)}
+        txt.each {|tx,typ| node(tx)}
       else
         @c << txt unless txt.nil?
       end

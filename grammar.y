@@ -87,13 +87,21 @@ rule
   # A method call
   Call:
    # method(arguments)
-   IDENTIFIER "(" ArgList ")"    { result = CallNode.new(nil, val[0], val[2]) }
+   IDENTIFIER "(" ArgList ")"    { result = CallNode.new(nil, val[0], val[2], false) }
     # receiver.method
-  | Expression "." IDENTIFIER     { result = CallNode.new(val[0], val[2]) }
+  | Expression "." IDENTIFIER     { result = CallNode.new(val[0], val[2], false) }
     # receiver.method(arguments)
   | Expression "."
-      IDENTIFIER "(" ArgList ")"  { result = CallNode.new(val[0], val[2], val[4]) }
-  | Expression BinaryOperator Expression  { result = CallNode.new(val[0], val[1], [val[2]]) } 
+      IDENTIFIER "(" ArgList ")"  { result = CallNode.new(val[0], val[2], val[4], false) }
+  | Expression BinaryOperator Expression  { result = CallNode.new(val[0], val[1], [val[2]], false) } 
+  # VERSION WITH ; AT THE END
+  | IDENTIFIER "(" ArgList ")" Terminator    { result = CallNode.new(nil, val[0], val[2], true) }
+    # receiver.method
+  | Expression "." IDENTIFIER Terminator   { result = CallNode.new(val[0], val[2], nil, true) }
+    # receiver.method(arguments)
+  | Expression "."
+      IDENTIFIER "(" ArgList ")" Terminator  { result = CallNode.new(val[0], val[2], val[4], true) }
+  | Expression BinaryOperator Expression Terminator  { result = CallNode.new(val[0], val[1], [val[2]], true) }
   ;
   
   Array:

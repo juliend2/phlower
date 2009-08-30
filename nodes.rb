@@ -67,10 +67,11 @@ end
 #   receiver.method(argument1, argument2)
 #
 class CallNode < Awesome
-  def initialize(receiver, method, arguments=[])
+  def initialize(receiver, method, arguments=[], is_end=false)
     @receiver = receiver
     @method = method
     @arguments = arguments
+    @is_end = is_end
   end
   
   def eval(context)
