@@ -1,9 +1,5 @@
 <?php
 
-function pass(){
-echo("joie");
-}
-
 class Awesome{
 
 function __construct(){
@@ -20,13 +16,4 @@ print("poulet");
 
 }
 
-$poulet = true;
-if ($poulet->to_i()) {
-$aw = new Awesome("brilliant!",2);
-$pouti = $aw->x();
-$awe = $aw->init()->x()->z();
-print($awe);
-} else {
-weird();
-$arr = array("joie",2);
-}
+$aw = new Awesome();

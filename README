@@ -20,8 +20,8 @@
             |/
 
 ==Introduction==
-phlower (pronounced flower) is a small ruby script that compiles the Awesome code (invented by MACournoyer) into PHP code.
-This script is written in Ruby and it uses the racc gem.
+phlower (pronounced flower) is a small ruby script that compiles the Awesome code (invented by MACournoyer for his book http://createyourproglang.com/) into PHP code.
+This script is written in Ruby and it depends on the racc gem.
 
 ==Usage==
 
@@ -29,12 +29,16 @@ input.aw file should contain your Awesome input code :
  
 class Awesome:
   def init():
-    return("Poulet")
+    pass();
   
-if true:
-  aw = Awesome.new("brilliant!")
-else:
-  weird()
+  def x():
+    return(2 + 2);
+
+  def z():
+    print("poulet");
+
+aw = Awesome.new();
+
 
 And :
 $ ruby phlower.rb input.aw compiled.php
@@ -45,16 +49,21 @@ Should output this PHP code :
 class Awesome{
 
 function __construct(){
-return("Poulet");
+pass();
+}
+
+function x(){
+return(2 + 2);
+}
+
+function z(){
+print("poulet");
 }
 
 }
 
-if (true) {
-$aw = new Awesome("brilliant!",2);
-} else {
-weird();
-}
+$aw = new Awesome();
+
 
 ==FEATURES==
 Here are a few language features that phlower supports :
@@ -66,7 +75,7 @@ Here are a few language features that phlower supports :
 * converts init() constructors to __construct() php's constructors
 
 ==TODO==
-* indentation support
+* indent outputted php
 * comments
 * object properties access
 * static class method access Class.method() => Class::method()
@@ -81,4 +90,4 @@ Here are a few language features that phlower supports :
 * break, continue
 * constants defined with define()
 * extends (for classes)
-* type casting , eq: (int)$var
+* type-casting , eq: (int)$var
