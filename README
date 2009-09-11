@@ -20,7 +20,7 @@
             |/
 
 ==Introduction==
-phlower (pronounced flower) is a small ruby script that compiles the Awesome code (invented by MACournoyer for his book http://createyourproglang.com/) into PHP code.
+phlower (pronounced flower) is a small ruby script that compiles the Awesome code (invented by MACournoyer for his book http://createyourproglang.com/ ) into PHP code.
 This script is written in Ruby and it depends on the racc gem.
 
 ==Usage==
