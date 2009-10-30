@@ -1,5 +1,9 @@
 <?php
 
+function pass(){
+echo("joie");
+}
+
 class Awesome{
 
 function __construct(){
@@ -16,4 +20,4 @@ print("poulet");
 
 }
 
-$aw = new Awesome();
+$poulet = true;
