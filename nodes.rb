@@ -2,6 +2,7 @@ class Awesome
 end
 # Collection of nodes each one representing an expression.
 class Nodes < Awesome
+  attr_accessor :nodes
   def initialize(nodes)
     @nodes = nodes
   end
@@ -25,6 +26,7 @@ end
 # Literals are static values that have a Ruby representation,
 # eg.: a string, a number, true, false, nil, etc.
 class LiteralNode < Awesome
+  attr_accessor :value
   def initialize(value)
     @value = value
   end
@@ -48,6 +50,7 @@ class LiteralNode < Awesome
 end
 
 class VarNode < Awesome
+  attr_accessor :name
   def initialize(name)
     @name = name
   end
@@ -67,6 +70,7 @@ end
 #   receiver.method(argument1, argument2)
 #
 class CallNode < Awesome
+  attr_accessor :receiver, :method, :arguments, :is_end
   def initialize(receiver, method, arguments=[], is_end=false)
     @receiver = receiver
     @method = method
@@ -99,6 +103,7 @@ class CallNode < Awesome
 end
 
 class ArrayNode < Awesome
+  attr_accessor :values
   def initialize(arguments=[])
     @values = arguments    
   end
@@ -110,6 +115,7 @@ end
 
 # Retreiving the value of a constant.
 class GetConstantNode < Awesome
+  attr_accessor :name
   def initialize(name)
     @name = name
   end
@@ -121,6 +127,7 @@ end
 
 # Setting the value of a constant.
 class SetConstantNode < Awesome
+  attr_accessor :name, :value
   def initialize(name, value)
     @name = name
     @value = value
@@ -133,6 +140,7 @@ end
 
 # Setting the value of a local variable.
 class SetLocalNode < Awesome
+  attr_accessor :name, :value, :is_end
   def initialize(name, value, is_end)
     @name = name
     @value = value
@@ -146,6 +154,7 @@ end
 
 # Method definition.
 class DefNode < Awesome
+  attr_accessor :name, :params, :body
   def initialize(name, params, body)
     @name = name
     @params = params
@@ -159,6 +168,7 @@ end
 
 # Class definition.
 class ClassNode < Awesome
+  attr_accessor :name, :body
   def initialize(name, body)
     @name = name
     @body = body
@@ -180,6 +190,7 @@ end
 # Look at this node if you want to implement other
 # control structures like while, for, loop, etc.
 class IfNode < Awesome
+  attr_accessor :condition, :body, :else_body
   def initialize(condition, body, else_body=nil)
     @condition = condition
     @body = body

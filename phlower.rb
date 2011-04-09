@@ -177,7 +177,7 @@ def node(objet)
   end
   
   if objet.instance_of?(ArrayNode)
-    arraynode(objet.instance_variable_get(:@values)) do |txt|
+    arraynode(objet.values) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -189,7 +189,7 @@ def node(objet)
   end
   
   if objet.instance_of?(GetConstantNode)
-    getconstantnode(objet.instance_variable_get(:@name)) do |txt|
+    getconstantnode(objet.name) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -202,9 +202,7 @@ def node(objet)
   
   # if true:
   if objet.instance_of?(IfNode)
-    ifnode(objet.instance_variable_get(:@condition), 
-      objet.instance_variable_get(:@body), 
-      objet.instance_variable_get(:@else_body)) do |txt|
+    ifnode(objet.condition, objet.body, objet.else_body) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -217,8 +215,7 @@ def node(objet)
   
   # class Name:
   if objet.instance_of?(ClassNode)
-    classnode(objet.instance_variable_get(:@name), 
-    objet.instance_variable_get(:@body)) do |txt|
+    classnode(objet.name, objet.body) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -231,9 +228,7 @@ def node(objet)
   
   # def methode:
   if objet.instance_of?(DefNode)
-    defnode(objet.instance_variable_get(:@name), 
-    objet.instance_variable_get(:@params), 
-    objet.instance_variable_get(:@body)) do |txt|
+    defnode(objet.name, objet.params, objet.body) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -246,10 +241,7 @@ def node(objet)
   
   # objet.method(args)
   if objet.instance_of?(CallNode)
-    callnode(objet.instance_variable_get(:@method), 
-    objet.instance_variable_get(:@arguments), 
-    objet.instance_variable_get(:@receiver),
-    objet.instance_variable_get(:@is_end)) do |txt, type|
+    callnode(objet.method, objet.arguments, objet.receiver, objet.is_end) do |txt, type|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -262,7 +254,7 @@ def node(objet)
   
   # variable
   if objet.instance_of?(VarNode)
-    varnode(objet.instance_variable_get(:@name)) do |txt|
+    varnode(objet.name) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -275,9 +267,7 @@ def node(objet)
   
   # var = value
   if objet.instance_of?(SetLocalNode)
-    setlocalnode(objet.instance_variable_get(:@name), 
-    objet.instance_variable_get(:@value),
-    objet.instance_variable_get(:@is_end)) do |txt|
+    setlocalnode(objet.name, objet.value, objet.is_end) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -289,7 +279,7 @@ def node(objet)
   end
   
   if objet.instance_of?(Nodes)
-    nodenode(objet.instance_variable_get(:@nodes)) do |txt|
+    nodenode(objet.nodes) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -301,7 +291,7 @@ def node(objet)
   end
   
   if objet.instance_of?(LiteralNode)
-    literalnode(objet.instance_variable_get(:@value)) do |txt|
+    literalnode(objet.value) do |txt|
       if txt.is_a?(Awesome)
         node(txt)
       elsif(txt.instance_of?(Array))
@@ -334,7 +324,7 @@ class AwesomePHP
       # output
       returned = ''
       if objects.instance_of?(Nodes)
-        objarray = objects.instance_variable_get(:@nodes)
+        objarray = objects.nodes
         objarray.each do |object|
           returned << node(object)  unless node(object).nil?
         end
@@ -355,7 +345,7 @@ class AwesomePHP
       # output
       @c << "<?php\n\n"
       if objects.instance_of?(Nodes)
-        objarray = objects.instance_variable_get(:@nodes)
+        objarray = objects.nodes
         objarray.each do |object|
           @c << node(object)  unless node(object).nil?
         end
