@@ -309,6 +309,7 @@ end
 
 
 class AwesomePHP
+  attr_accessor :c
   def initialize(inputfile, outputfile=false, isstring=false)
     @input = inputfile
     @output = outputfile

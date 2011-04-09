@@ -146,19 +146,19 @@ rule
   
   # if and if-else block
   If:
-    IF Expression Block           { result = IfNode.new(val[1], val[2]) }
-  | IF Expression Block NEWLINE
-    ELSE Block                    { result = IfNode.new(val[1], val[2], val[5]) }
+    IF Expression Block
+    ELSE Block                    { result = IfNode.new(val[1], val[2], val[4]) }
+  | IF Expression Block           { result = IfNode.new(val[1], val[2]) }
   ;
   
   # A block of indented code. You see here that all the hard work was done
   # by the lexer.
   Block:
-    INDENT Expressions DEDENT     { result = val[1] }
+    # INDENT Expressions DEDENT     { result = val[1] }
   # If you don't like indentation you could replace the previous rule with
   # the following one do seperate blocks w/ "{" ... "}".
   # (You'll need remove the indentation magic section in the lexer too)
-  # "{" Expressions "}"           { replace = val[1] }
+    "{" Expressions "}"           { result = val[1] }
   ;
 end
 

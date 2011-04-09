@@ -12,11 +12,11 @@ class Lexer
     tokens = []
     
     # Current indent level is the number of spaces in the last indent.
-    current_indent = 0
+    #current_indent = 0
     # We keep track of the indentation levels we are in so
     # that when we dedent, we can check if we're on the
     # correct level.
-    indent_stack = []
+    # indent_stack = []
     
     # This is how to implement a very simple scanner.
     # Scan one caracter at the time until you find something to parse.
@@ -63,38 +63,41 @@ class Lexer
       #
       # This elsif takes care of the first case.
       # The number of spaces will determine the indent level.
-      elsif indent = chunk[/\A\:\n( +)/m, 1]
-        # When we create a new block we expect the indent level
-        # to go up.
-        if indent.size <= current_indent
-          raise "Bad indent level, got #{indent.size} indents, " +
-                "expected > #{current_indent}"
-        end
-        # Adjust the current indentation level.
-        current_indent = indent.size
-        indent_stack.push(current_indent)
-        tokens << [:INDENT, indent.size]
-        i += indent.size + 2
+      # elsif indent = chunk[/\A\:\n( +)/m, 1]
+      #   # When we create a new block we expect the indent level
+      #   # to go up.
+      #   if indent.size <= current_indent
+      #     raise "Bad indent level, got #{indent.size} indents, " +
+      #           "expected > #{current_indent}"
+      #   end
+      #   # Adjust the current indentation level.
+      #   current_indent = indent.size
+      #   indent_stack.push(current_indent)
+      #   tokens << [:INDENT, indent.size]
+      #   i += indent.size + 2
   
       # This one takes care of cases 2 and 3.
       # We stay in the same block if the indent level is the
       # same as current_indent, or close a block, if it is lower.
-      elsif indent = chunk[/\A\n( *)/m, 1]
-        if indent.size < current_indent
-          indent_stack.pop
-          current_indent = indent_stack.first || 0
-          tokens << [:DEDENT, indent.size]
-          tokens << [:NEWLINE, "\n"]
-        elsif indent.size == current_indent
-          # Nothing to do, we're still in the same block
-          tokens << [:NEWLINE, "\n"]
-        else # indent.size > current_indent
-          # Cannot increase indent level without using ":", so
-          # this is an error.
-          raise "Missing ':'"
-        end
-        i += indent.size + 1
+      # elsif indent = chunk[/\A\n( *)/m, 1]
+      #   if indent.size < current_indent
+      #     indent_stack.pop
+      #     current_indent = indent_stack.first || 0
+      #     tokens << [:DEDENT, indent.size]
+      #     tokens << [:NEWLINE, "\n"]
+      #   elsif indent.size == current_indent
+      #     # Nothing to do, we're still in the same block
+      #     tokens << [:NEWLINE, "\n"]
+      #   else # indent.size > current_indent
+      #     # Cannot increase indent level without using ":", so
+      #     # this is an error.
+      #     raise "Missing ':'"
+      #   end
+      #   i += indent.size + 1
       
+      elsif indent = chunk[/\A\n( *)/m, 1]
+        tokens << [:NEWLINE, "\n"]
+        i += 1
       # Ignore whitespace
       elsif chunk.match(/\A /)
         i += 1
@@ -111,9 +114,9 @@ class Lexer
     end
     
     # Close all open blocks
-    while indent = indent_stack.pop
-      tokens << [:DEDENT, indent_stack.first || 0]
-    end
+    # while indent = indent_stack.pop
+    #   tokens << [:DEDENT, indent_stack.first || 0]
+    # end
     
     tokens
   end

@@ -141,6 +141,6 @@ Runtime["Class"].awesome_methods["new"] = proc do |receiver, arguments|
 end
 
 Runtime["Object"].awesome_methods["print"] = proc do |receiver, arguments|
-  puts arguments.first.ruby_value
+  #puts arguments.first.ruby_value
   Runtime["nil"]
 end
