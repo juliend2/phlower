@@ -27,15 +27,19 @@ This script is written in Ruby and it depends on the racc gem.
 
 input.aw file should contain your Awesome input code :
  
-class Awesome:
-  def init():
+class Awesome{
+  def init(){
     pass();
+  }
   
-  def x():
+  def x(){
     return(2 + 2);
+  }
 
-  def z():
+  def z(){
     print("poulet");
+  }
+}
 
 aw = Awesome.new();
 
